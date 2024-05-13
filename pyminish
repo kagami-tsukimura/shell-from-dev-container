@@ -1,4 +1,21 @@
 #!/usr/bin/env python3
 
+
 # ./pyminish
-print("Hello, World")
+def main():
+    while True:
+        line = input("> ")
+        tokens = line.split()
+
+        if len(tokens) == 0:
+            continue
+
+        command = tokens[0]
+        args = tokens[1:]
+
+        # TODO: run command
+        print(command, args)
+
+
+if __name__ == "__main__":
+    main()
