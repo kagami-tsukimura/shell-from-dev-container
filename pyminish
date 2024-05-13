@@ -47,9 +47,15 @@ def main():
             if command_path is None:
                 print(f"Command not found: {command}", file=sys.stderr)
                 continue
+
+            pid = os.fork()
+
+            if pid == 0:
+                command_basename = os.path.basename(command_path)
+                os.execve(command_path, [command_basename] + args, os.environ)
             else:
-                print(command_path)
-                os.system(f"{command_path} {' '.join(args)}")
+                os.waitpid(pid, 0)
+                continue
 
 
 if __name__ == "__main__":
