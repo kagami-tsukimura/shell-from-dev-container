@@ -47,9 +47,19 @@ def main():
             if command_path is None:
                 print(f"Command not found: {command}", file=sys.stderr)
                 continue
+
+            # シェルの実行
+            # NOTE: プロセスを複製して親プロセスと子プロセスに分ける
+            pid = os.fork()
+
+            if pid == 0:
+                # パスからファイル名を取り出す
+                command_basename = os.path.basename(command_path)
+                # NOTE: プロセスに関する処理をカーネルに依頼（別プロセス起動）
+                os.execve(command_path, [command_basename] + args, os.environ)
             else:
-                print(command_path)
-                os.system(f"{command_path} {' '.join(args)}")
+                os.waitpid(pid, 0)
+                continue
 
 
 if __name__ == "__main__":
