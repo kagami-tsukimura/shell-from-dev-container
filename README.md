@@ -18,3 +18,9 @@
 
 1. `Ctrl + Shift + P`で`Dev Containers: ~ Reopen in Container`を選択する。
 2. 構築完了（初回数分程度）後に、`Dev Container`環境に移行していることを確認する。
+
+### path が通っているディレクトリの一覧表示
+
+```bash
+echo $PATH | tr ":" "\n"
+```
