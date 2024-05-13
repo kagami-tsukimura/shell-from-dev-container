@@ -30,6 +30,7 @@ def main():
         if command in BUILTIN_COMMAND_FUNC_MAPPING:
             BUILTIN_COMMAND_FUNC_MAPPING[command](args)
         else:
+            # TODO: External command
             print(f"Unknown command: {command}")
 
 
