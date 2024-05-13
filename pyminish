@@ -26,7 +26,6 @@ def main():
         args = tokens[1:]
 
         # TODO: run command
-        # print(command, args)
         if command in BUILTIN_COMMAND_FUNC_MAPPING:
             BUILTIN_COMMAND_FUNC_MAPPING[command](args)
         else:
