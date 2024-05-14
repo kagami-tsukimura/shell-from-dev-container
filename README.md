@@ -24,3 +24,40 @@
 ```bash
 echo $PATH | tr ":" "\n"
 ```
+
+## 自作シェルの実行方法
+
+- PATH の通っていないディレクトリ
+
+  ```bash
+  <ディレクトリパス>/pyminish
+  ```
+
+- PATH の通っているディレクトリ
+
+  - `/usr/local/bin`等に配置
+  - `/usr/local/bin`は、デフォルトで PATH が通っている
+
+    - `export`コマンドや、`~/.bashrc`に記述して明示的に PATH を通せる。
+
+    ```bash: ~/.bashrc
+    export PATH=$HOME/commands:$PATH
+    ```
+
+  ```bash
+  pyminish
+  ```
+
+## AWS の EC2 上で pyminish のテスト
+
+`/home/kshimura/develop/terraform-sample/env/sample`で、`tf apply`を実行する。
+
+```bash
+cd /home/kshimura/develop/terraform-sample/env/sample
+tf apply
+```
+
+### AWS 環境で確認
+
+EC2 に接続し、`pyminish-user`でログインする。  
+`pyminish`が起動していることを確認する。
