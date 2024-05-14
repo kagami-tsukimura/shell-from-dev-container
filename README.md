@@ -47,3 +47,17 @@ echo $PATH | tr ":" "\n"
   ```bash
   pyminish
   ```
+
+## AWS の EC2 上で pyminish のテスト
+
+`/home/kshimura/develop/terraform-sample/env/sample`で、`tf apply`を実行する。
+
+```bash
+cd /home/kshimura/develop/terraform-sample/env/sample
+tf apply
+```
+
+### AWS 環境で確認
+
+EC2 に接続し、`pyminish-user`でログインする。  
+`pyminish`が起動していることを確認する。
