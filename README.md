@@ -24,3 +24,17 @@
 ```bash
 echo $PATH | tr ":" "\n"
 ```
+
+## 自作シェルの実行方法
+
+- PATH の通っていないディレクトリ
+
+  ```bash
+  <ディレクトリパス>/pyminish
+  ```
+
+- PATH の通っているディレクトリ
+
+  ```bash
+  pyminish
+  ```
