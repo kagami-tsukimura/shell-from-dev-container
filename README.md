@@ -38,6 +38,12 @@ echo $PATH | tr ":" "\n"
   - `/usr/local/bin`等に配置
   - `/usr/local/bin`は、デフォルトで PATH が通っている
 
+    - `export`コマンドや、`~/.bashrc`に記述して明示的に PATH を通せる。
+
+    ```bash: ~/.bashrc
+    export PATH=$HOME/commands:$PATH
+    ```
+
   ```bash
   pyminish
   ```
