@@ -35,6 +35,9 @@ echo $PATH | tr ":" "\n"
 
 - PATH の通っているディレクトリ
 
+  - `/usr/local/bin`等に配置
+  - `/usr/local/bin`は、デフォルトで PATH が通っている
+
   ```bash
   pyminish
   ```
