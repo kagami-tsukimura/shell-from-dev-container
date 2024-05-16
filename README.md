@@ -86,5 +86,11 @@ EC2 に接続し、`pyminish-user`でログインする。
 - `ec2-user`で下記コマンドを実行し、`pyminish` が起動していることを確認する。
 
   ```bash
-  strace
+  sudo strace -ff -p <一番左のsshdのpid> 2>&1 | grep execve
+  ```
+
+- sample
+
+  ```bash
+  sudo strace -ff -p 5005 2>&1 | grep execve
   ```
