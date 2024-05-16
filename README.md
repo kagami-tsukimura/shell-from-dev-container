@@ -94,3 +94,5 @@ EC2 に接続し、`pyminish-user`でログインする。
   ```bash
   sudo strace -ff -p 5005 2>&1 | grep execve
   ```
+
+- 指定した pid のプロセスの子プロセスのシステムコールから、`execve`のものを出力する。
