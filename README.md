@@ -50,10 +50,10 @@ echo $PATH | tr ":" "\n"
 
 ## AWS の EC2 上で pyminish のテスト
 
-`/home/kshimura/develop/terraform-sample/env/sample`で、`tf apply`を実行する。
+`~/develop/terraform-sample/env/sample`で、`tf apply`を実行する。
 
 ```bash
-cd /home/kshimura/develop/terraform-sample/env/sample
+cd ~/develop/terraform-sample/env/sample
 tf apply
 ```
 
