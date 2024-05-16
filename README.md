@@ -65,4 +65,16 @@ EC2 に接続し、`pyminish-user`でログインする。
 
 ### 動作テスト
 
-EC2 で`ec2-user`で接続。
+1. EC2 で`ec2-user`で接続。
+1. `ec2-user`で下記コマンドを実行。
+
+   ```bash
+   pstree -p
+   ```
+
+1. 別タブで、EC2 で`pyminish-user`で接続。
+1. `ec2-user`で下記コマンドを実行。
+
+   ```bash
+   pstree -p
+   ```
