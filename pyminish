@@ -2,6 +2,7 @@
 
 # ./pyminish
 import os
+import signal
 import sys
 
 
@@ -27,7 +28,13 @@ def find_command(command):
     return None
 
 
+def sigint_handler(signum, frame):
+    pass
+
+
 def main():
+    signal.signal(signal.SIGINT, sigint_handler)
+
     while True:
         line = input("> ")
         tokens = line.split()
