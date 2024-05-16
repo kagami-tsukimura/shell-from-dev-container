@@ -64,3 +64,5 @@ EC2 に接続し、`pyminish-user`でログインする。
 `pyminish`が起動していることを確認する。
 
 ### 動作テスト
+
+EC2 で`ec2-user`で接続。
