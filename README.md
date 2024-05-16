@@ -83,7 +83,7 @@ EC2 に接続し、`pyminish-user`でログインする。
 
 - sshd の下で、bash とは別に、python3 の起動を確認。
 - `fork execve` というシステムコールで、sshd の pyminish を起動している。
-- 下記コマンドを実行することで、`pyminish` が起動していることを確認する。
+- `ec2-user`で下記コマンドを実行し、`pyminish` が起動していることを確認する。
 
   ```bash
   strace
