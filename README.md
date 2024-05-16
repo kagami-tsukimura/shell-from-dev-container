@@ -50,10 +50,11 @@ echo $PATH | tr ":" "\n"
 
 ## AWS の EC2 上で pyminish のテスト
 
-`/home/kshimura/develop/terraform-sample/env/sample`で、`tf apply`を実行する。
+`~/develop/terraform-sample/env/sample`で、`tf apply`を実行する。  
+EC2 および本プロジェクトの`pyminish`を起動。
 
 ```bash
-cd /home/kshimura/develop/terraform-sample/env/sample
+cd ~/develop/terraform-sample/env/sample
 tf apply
 ```
 
@@ -61,3 +62,38 @@ tf apply
 
 EC2 に接続し、`pyminish-user`でログインする。  
 `pyminish`が起動していることを確認する。
+
+### 動作テスト
+
+1. EC2 で`ec2-user`で接続。
+1. `ec2-user`で下記コマンドを実行。
+
+   ```bash
+   pstree -p
+   ```
+
+- sshd の下で、bash の起動を確認。
+
+1. 別タブで、EC2 で`pyminish-user`で接続。
+1. `ec2-user`で下記コマンドを実行。
+
+   ```bash
+   pstree -p
+   ```
+
+- sshd の下で、bash とは別に、python3 の起動を確認。
+- `fork・execve` というシステムコールで、sshd の pyminish を起動している。
+- `ec2-user`で下記コマンドを実行し、`pyminish` が起動していることを確認する。
+
+  ```bash
+  sudo strace -ff -p <一番左のsshdのpid> 2>&1 | grep execve
+  ```
+
+- sample
+
+  ```bash
+  sudo strace -ff -p 5005 2>&1 | grep execve
+  ```
+
+- 指定した pid のプロセスの子プロセスのシステムコールから、`execve`のものを出力する。
+  - 大量のシステムコールが発行される。（ログインで止まる）
