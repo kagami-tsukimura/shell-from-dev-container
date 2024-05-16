@@ -102,3 +102,4 @@ EC2 に接続し、`pyminish-user`でログインする。
 
 - あるプロセスから別プロセスに通信する方法。
 - `Ctrl + C`で`pyminish`が停止しないようにするために使用。
+- SIGTERM: `ps aux`で pid を表示し、`kill`コマンドを実行した際は、`SIGTERM`を送信している。
