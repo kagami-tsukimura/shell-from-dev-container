@@ -82,3 +82,4 @@ EC2 に接続し、`pyminish-user`でログインする。
    ```
 
 - sshd の下で、bash とは別に、python3 の起動を確認。
+- `execve` のシステムコールで、sshd の python3 を起動している。
