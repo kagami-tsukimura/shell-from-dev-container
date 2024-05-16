@@ -81,4 +81,4 @@ EC2 に接続し、`pyminish-user`でログインする。
    pstree -p
    ```
 
--
+- sshd の下で、bash とは別に、python3 の起動を確認。
