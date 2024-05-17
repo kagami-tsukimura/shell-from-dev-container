@@ -147,7 +147,10 @@ def main():
         signal.signal(signal.SIGINT, sigint_handler)
 
         while True:
-            line = input(">")
+            # 色付け
+            yello_start = "\033[33m"
+            end_of_color = "\033[0m"
+            line = input(f"{yello_start}pyminish> {end_of_color}">")
             interpret_line(line)
 
     else:
