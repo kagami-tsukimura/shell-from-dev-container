@@ -66,6 +66,8 @@ def interpret_line(line):
     if len(tokens) == 0:
         return
 
+    run_command(tokens)
+
 
 def sigint_handler(signum, frame):
     pass
