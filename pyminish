@@ -28,6 +28,13 @@ def find_command(command):
     return None
 
 
+def set_stdio(stdin_fd=None, stdout_fd=None):
+    if stdin_fd is not None:
+        os.dup2(stdin_fd, sys.stdin.fileno())
+    if stdout_fd is not None:
+        os.dup2(stdout_fd, sys.stdout.fileno())
+
+
 def run_command(tokens, stdin_fd=None, stdout_fd=None):
     command = tokens[0]
     args = tokens[1:]
@@ -48,6 +55,8 @@ def run_command(tokens, stdin_fd=None, stdout_fd=None):
         pid = os.fork()
 
         if pid == 0:
+            # 標準出力のファイルディスクリプタを変更
+            set_stdio(stdin_fd, stdout_fd)
             # パスからファイル名を取り出す
             command_basename = os.path.basename(command_path)
             # NOTE: プロセスに関する処理をカーネルに依頼（別プロセス起動）
@@ -79,6 +88,10 @@ def interpret_line(line):
         command_and_args = tokens[:redirection_index]
         # ">" の右側をファイル名として取り出す
         stdout_file_name = tokens[redirection_index + 1]
+
+        with open(stdout_file_name, "w") as f:
+            stdout_fd = f.fileno()
+            run_command(command_and_args, stdout_fd=stdout_fd)
 
         pass
     elif pipe_count == 1:
