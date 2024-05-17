@@ -78,7 +78,7 @@ def interpret_line(line):
     if len(tokens) == 0:
         return
 
-    redirection_count = tokens.count("<")
+    redirection_count = tokens.count(">")
     pipe_count = tokens.count("|")
 
     if redirection_count + pipe_count >= 2:
@@ -121,7 +121,7 @@ def main():
         signal.signal(signal.SIGINT, sigint_handler)
 
         while True:
-            line = input("> ")
+            line = input(">")
             interpret_line(line)
 
     else:
