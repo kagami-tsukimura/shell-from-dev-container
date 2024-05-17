@@ -7,3 +7,4 @@
 
 echo hello
 ls > ls.output
+echo hello > echo.output
