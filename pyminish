@@ -15,6 +15,7 @@ def builtin_exit(args):
 
 
 def builtin_clear(args):
+    # 033: 8進数
     print("\033[H\033[2J\033[3J")
 
 
