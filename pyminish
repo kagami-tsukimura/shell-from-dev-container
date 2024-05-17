@@ -93,6 +93,7 @@ def interpret_line(line):
         stdout_file_name = tokens[redirection_index + 1]
 
         with open(stdout_file_name, "w") as f:
+            # ファイルディスクリプタを確認して実行
             stdout_fd = f.fileno()
             run_command(command_and_args, stdout_fd=stdout_fd)
 
