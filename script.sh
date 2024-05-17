@@ -8,4 +8,5 @@
 echo hello
 # 外部コマンドでリダイレクト
 ls > ls.output
+# 内部コマンドでリダイレクト
 echo hello > echo.output
