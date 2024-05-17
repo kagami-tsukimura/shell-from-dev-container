@@ -6,4 +6,4 @@
 # #!./pyminish: ./pyminish script.sh として実行
 
 echo hello
-ls
+ls > ls.output
