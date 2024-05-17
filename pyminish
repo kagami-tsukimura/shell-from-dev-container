@@ -14,7 +14,16 @@ def builtin_exit(args):
     exit(0)
 
 
-BUILTIN_COMMAND_FUNC_MAPPING = {"echo": builtin_echo, "exit": builtin_exit}
+def builtin_clear(args):
+    # 033: 8進数のシーケンス
+    print("\033[H\033[2J\033[3J", end="")
+
+
+BUILTIN_COMMAND_FUNC_MAPPING = {
+    "echo": builtin_echo,
+    "exit": builtin_exit,
+    "clear": builtin_clear,
+}
 
 
 def find_command(command):
@@ -138,7 +147,10 @@ def main():
         signal.signal(signal.SIGINT, sigint_handler)
 
         while True:
-            line = input(">")
+            # 色付け
+            yello_start = "\033[33m"
+            end_of_color = "\033[0m"
+            line = input(f"🐍🐚 {yello_start}pyminish{end_of_color} >")
             interpret_line(line)
 
     else:
