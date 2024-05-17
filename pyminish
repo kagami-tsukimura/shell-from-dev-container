@@ -29,6 +29,9 @@ def find_command(command):
 
 
 def interpret_line(line):
+    if line.strip().startswith("#"):
+        return
+
     tokens = line.split()
 
     if len(tokens) == 0:
