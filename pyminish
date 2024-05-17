@@ -44,6 +44,7 @@ def run_command(tokens, stdin_fd=None, stdout_fd=None):
 
     # TODO: run command
     if command in BUILTIN_COMMAND_FUNC_MAPPING:
+        set_stdio(stdin_fd, stdout_fd)
         # 内部コマンド
         BUILTIN_COMMAND_FUNC_MAPPING[command](args)
     else:
