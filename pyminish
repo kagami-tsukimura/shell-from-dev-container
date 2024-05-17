@@ -15,11 +15,15 @@ def builtin_exit(args):
 
 
 def builtin_clear(args):
-    # 033: 8進数
-    print("\033[H\033[2J\033[3J")
+    # 033: 8進数のシーケンス
+    print("\033[H\033[2J\033[3J", end="")
 
 
-BUILTIN_COMMAND_FUNC_MAPPING = {"echo": builtin_echo, "exit": builtin_exit}
+BUILTIN_COMMAND_FUNC_MAPPING = {
+    "echo": builtin_echo,
+    "exit": builtin_exit,
+    "clear": builtin_clear,
+}
 
 
 def find_command(command):
