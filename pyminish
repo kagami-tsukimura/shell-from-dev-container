@@ -28,23 +28,16 @@ def find_command(command):
     return None
 
 
-def interpret_line(line):
-    if line.strip().startswith("#"):
-        return
-
-    tokens = line.split()
-
-    if len(tokens) == 0:
-        return
-
+def run_command(tokens, stdin_fd=None, stdout_fd=None):
     command = tokens[0]
     args = tokens[1:]
 
     # TODO: run command
     if command in BUILTIN_COMMAND_FUNC_MAPPING:
+        # 内部コマンド
         BUILTIN_COMMAND_FUNC_MAPPING[command](args)
     else:
-        # TODO: External command
+        # 外部コマンド
         command_path = find_command(command)
         if command_path is None:
             print(f"Command not found: {command}", file=sys.stderr)
@@ -62,6 +55,16 @@ def interpret_line(line):
         else:
             os.waitpid(pid, 0)
             return
+
+
+def interpret_line(line):
+    if line.strip().startswith("#"):
+        return
+
+    tokens = line.split()
+
+    if len(tokens) == 0:
+        return
 
 
 def sigint_handler(signum, frame):
