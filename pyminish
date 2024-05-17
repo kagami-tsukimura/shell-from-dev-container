@@ -109,7 +109,15 @@ def interpret_line(line):
         # パイプ時の処理
         pipe_index = tokens.index("|")
         # "|" 以前をコマンドと引数として取り出す
-        command_and_args = tokens[:pipe_index]
+        command_and_args1 = tokens[:pipe_index]
+        command_and_args2 = tokens[pipe_index + 1]
+
+        pipe_r, pipe_w = os.pipe()
+
+        run_command(command_and_args1, stdin_fd=pipe_w)
+        os.close(pipe_w)
+        run_command(command_and_args2, stdin_fd=pipe_r)
+        os.close(pipe_r)
     else:
         run_command(tokens)
 
