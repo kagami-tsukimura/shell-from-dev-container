@@ -85,6 +85,7 @@ def interpret_line(line):
         return
 
     if redirection_count == 1:
+        # リダイレクト時の処理
         redirection_index = tokens.index(">")
         # ">" 以前をコマンドと引数として取り出す
         command_and_args = tokens[:redirection_index]
