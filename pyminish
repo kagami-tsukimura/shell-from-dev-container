@@ -79,6 +79,12 @@ def main():
             line = input("> ")
             interpret_line(line)
 
+    else:
+        # シェルスクリプト
+        with open(file_name) as f:
+            for line in f:
+                interpret_line(line)
+
 
 if __name__ == "__main__":
     main()
