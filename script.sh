@@ -6,4 +6,9 @@
 # #!./pyminish: ./pyminish script.sh として実行
 
 echo hello
-ls
+# 外部コマンドでリダイレクト
+ls > ls.output
+# 内部コマンドでリダイレクト
+echo hello > echo.output
+# パイプ
+ls | wc -l

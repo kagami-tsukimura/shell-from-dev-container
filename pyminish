@@ -28,23 +28,32 @@ def find_command(command):
     return None
 
 
-def interpret_line(line):
-    if line.strip().startswith("#"):
-        return
+def set_stdio(stdin_fd=None, stdout_fd=None):
+    # dup2: システムコールでファイルディスクリプタを変更
+    if stdin_fd is not None:
+        # sys.stdin.fileno(): 0
+        os.dup2(stdin_fd, sys.stdin.fileno())
+    if stdout_fd is not None:
+        # sys.stdout.fileno(): 1
+        os.dup2(stdout_fd, sys.stdout.fileno())
 
-    tokens = line.split()
 
-    if len(tokens) == 0:
-        return
-
+def run_command(tokens, stdin_fd=None, stdout_fd=None):
     command = tokens[0]
     args = tokens[1:]
 
     # TODO: run command
     if command in BUILTIN_COMMAND_FUNC_MAPPING:
+        default_stdin = os.dup(sys.stdin.fileno())
+        default_stdout = os.dup(sys.stdin.fileno())
+        # 一時的に標準出力をリダイレクトに切り替える
+        set_stdio(stdin_fd, stdout_fd)
+        # 内部コマンド
         BUILTIN_COMMAND_FUNC_MAPPING[command](args)
+        # シェルの標準出力を変更してしまい、プロンプト表示も出てしまうため、標準入出力を戻す
+        set_stdio(default_stdin, default_stdout)
     else:
-        # TODO: External command
+        # 外部コマンド
         command_path = find_command(command)
         if command_path is None:
             print(f"Command not found: {command}", file=sys.stderr)
@@ -55,6 +64,8 @@ def interpret_line(line):
         pid = os.fork()
 
         if pid == 0:
+            # 標準出力のファイルディスクリプタを変更
+            set_stdio(stdin_fd, stdout_fd)
             # パスからファイル名を取り出す
             command_basename = os.path.basename(command_path)
             # NOTE: プロセスに関する処理をカーネルに依頼（別プロセス起動）
@@ -62,6 +73,54 @@ def interpret_line(line):
         else:
             os.waitpid(pid, 0)
             return
+
+
+def interpret_line(line):
+    if line.strip().startswith("#"):
+        return
+
+    tokens = line.split()
+
+    if len(tokens) == 0:
+        return
+
+    redirection_count = tokens.count(">")
+    pipe_count = tokens.count("|")
+
+    if redirection_count + pipe_count >= 2:
+        print("More than 2 redirections or pipes are not supported", file=sys.stderr)
+        return
+
+    if redirection_count == 1:
+        # リダイレクト時の処理
+        redirection_index = tokens.index(">")
+        # ">" 以前をコマンドと引数として取り出す
+        command_and_args = tokens[:redirection_index]
+        # ">" の右側をファイル名として取り出す
+        stdout_file_name = tokens[redirection_index + 1]
+
+        with open(stdout_file_name, "w") as f:
+            # ファイルディスクリプタを確認して実行
+            stdout_fd = f.fileno()
+            run_command(command_and_args, stdout_fd=stdout_fd)
+
+        pass
+    elif pipe_count == 1:
+        # パイプ時の処理
+        pipe_index = tokens.index("|")
+        # "|" 以前をコマンドと引数として取り出す
+        command_and_args1 = tokens[:pipe_index]
+        pipe_index += 1
+        command_and_args2 = tokens[pipe_index:]
+
+        pipe_r, pipe_w = os.pipe()
+
+        run_command(command_and_args1, stdout_fd=pipe_w)
+        os.close(pipe_w)
+        run_command(command_and_args2, stdin_fd=pipe_r)
+        os.close(pipe_r)
+    else:
+        run_command(tokens)
 
 
 def sigint_handler(signum, frame):
@@ -79,7 +138,7 @@ def main():
         signal.signal(signal.SIGINT, sigint_handler)
 
         while True:
-            line = input("> ")
+            line = input(">")
             interpret_line(line)
 
     else:
