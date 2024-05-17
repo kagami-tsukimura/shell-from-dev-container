@@ -33,6 +33,11 @@ def sigint_handler(signum, frame):
 
 
 def main():
+    if len(sys.argv) >= 2:
+        file_name = sys.argv[1]
+    else:
+        file_name = None
+
     signal.signal(signal.SIGINT, sigint_handler)
 
     while True:
