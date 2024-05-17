@@ -29,6 +29,7 @@ def find_command(command):
 
 
 def set_stdio(stdin_fd=None, stdout_fd=None):
+    # dup2: システムコールでファイルディスクリプタを変更
     if stdin_fd is not None:
         # sys.stdin.fileno(): 0
         os.dup2(stdin_fd, sys.stdin.fileno())
