@@ -28,45 +28,63 @@ def find_command(command):
     return None
 
 
+def interpret_line(line):
+    tokens = line.split()
+
+    if len(tokens) == 0:
+        return
+
+    command = tokens[0]
+    args = tokens[1:]
+
+    # TODO: run command
+    if command in BUILTIN_COMMAND_FUNC_MAPPING:
+        BUILTIN_COMMAND_FUNC_MAPPING[command](args)
+    else:
+        # TODO: External command
+        command_path = find_command(command)
+        if command_path is None:
+            print(f"Command not found: {command}", file=sys.stderr)
+            return
+
+        # シェルの実行
+        # NOTE: プロセスを複製して親プロセスと子プロセスに分ける
+        pid = os.fork()
+
+        if pid == 0:
+            # パスからファイル名を取り出す
+            command_basename = os.path.basename(command_path)
+            # NOTE: プロセスに関する処理をカーネルに依頼（別プロセス起動）
+            os.execve(command_path, [command_basename] + args, os.environ)
+        else:
+            os.waitpid(pid, 0)
+            return
+
+
 def sigint_handler(signum, frame):
     pass
 
 
 def main():
-    signal.signal(signal.SIGINT, sigint_handler)
+    if len(sys.argv) >= 2:
+        file_name = sys.argv[1]
+    else:
+        file_name = None
 
-    while True:
-        line = input("> ")
-        tokens = line.split()
+    if file_name is None:
+        # インタラクティブシェル
+        signal.signal(signal.SIGINT, sigint_handler)
 
-        if len(tokens) == 0:
-            continue
+        while True:
+            line = input("> ")
+            interpret_line(line)
 
-        command = tokens[0]
-        args = tokens[1:]
-
-        # TODO: run command
-        if command in BUILTIN_COMMAND_FUNC_MAPPING:
-            BUILTIN_COMMAND_FUNC_MAPPING[command](args)
-        else:
-            # TODO: External command
-            command_path = find_command(command)
-            if command_path is None:
-                print(f"Command not found: {command}", file=sys.stderr)
-                continue
-
-            # シェルの実行
-            # NOTE: プロセスを複製して親プロセスと子プロセスに分ける
-            pid = os.fork()
-
-            if pid == 0:
-                # パスからファイル名を取り出す
-                command_basename = os.path.basename(command_path)
-                # NOTE: プロセスに関する処理をカーネルに依頼（別プロセス起動）
-                os.execve(command_path, [command_basename] + args, os.environ)
-            else:
-                os.waitpid(pid, 0)
-                continue
+    else:
+        # シェルスクリプト
+        with open(file_name) as f:
+            # シェルの各行を実行
+            for line in f:
+                interpret_line(line)
 
 
 if __name__ == "__main__":
