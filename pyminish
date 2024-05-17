@@ -71,6 +71,7 @@ def interpret_line(line):
 
     if redirection_count + pipe_count >= 2:
         print("More than 2 redirections or pipes are not supported", file=sys.stderr)
+        return
 
     run_command(tokens)
 
