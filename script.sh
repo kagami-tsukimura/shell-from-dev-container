@@ -6,5 +6,6 @@
 # #!./pyminish: ./pyminish script.sh として実行
 
 echo hello
+# 外部コマンドでリダイレクト
 ls > ls.output
 echo hello > echo.output
