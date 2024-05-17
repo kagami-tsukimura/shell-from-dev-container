@@ -106,8 +106,10 @@ def interpret_line(line):
 
         pass
     elif pipe_count == 1:
-        # TODO: pipe
-        pass
+        # パイプ時の処理
+        pipe_index = tokens.index("|")
+        # "|" 以前をコマンドと引数として取り出す
+        command_and_args = tokens[:pipe_index]
     else:
         run_command(tokens)
 
