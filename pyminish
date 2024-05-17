@@ -50,6 +50,7 @@ def run_command(tokens, stdin_fd=None, stdout_fd=None):
         set_stdio(stdin_fd, stdout_fd)
         # 内部コマンド
         BUILTIN_COMMAND_FUNC_MAPPING[command](args)
+        set_stdio(default_stdin, default_stdout)
     else:
         # 外部コマンド
         command_path = find_command(command)
