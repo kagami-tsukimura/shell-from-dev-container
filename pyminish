@@ -73,7 +73,14 @@ def interpret_line(line):
         print("More than 2 redirections or pipes are not supported", file=sys.stderr)
         return
 
-    run_command(tokens)
+    if redirection_count == 1:
+        # TODO: redirection
+        pass
+    elif pipe_count == 1:
+        # TODO: pipe
+        pass
+    else:
+        run_command(tokens)
 
 
 def sigint_handler(signum, frame):
